@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as quoteService from "@/services/quote.service";
 
-export async function GET(req: NextRequest, { params }: { params: { quoteId: string } }) {
+export async function GET(
+    req: Request,
+    context: { params: { quoteId: string } }
+  ) {
     try {
-      const { quoteId } = params;
-  
+      const { quoteId } = context.params;
       const quote = await quoteService.getQuoteById(quoteId);
+  
       if (!quote) {
         return NextResponse.json({ error: "Quote not found" }, { status: 404 });
       }
-      return NextResponse.json({ quote }, { status: 200 });
-    } catch (e) {
-      console.error("Error fetching quote:", e);
-      return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+  
+      return NextResponse.json({ quote });
+    } catch (error) {
+      return NextResponse.json(
+        { error: (error as Error).message },
+        { status: 500 }
+      );
     }
   }
 
