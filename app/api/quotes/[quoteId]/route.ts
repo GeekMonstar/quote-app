@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as quoteService from "@/services/quote.service";
 
-export async function GET(req: NextRequest, {params}: {params: {quoteId: string}}) {
+export async function GET(request: Request, { params }: { params: { quoteId: string } }) {
   try {
     const {quoteId} = params;
     const quote = await quoteService.getQuoteById(quoteId);
